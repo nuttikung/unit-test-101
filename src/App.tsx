@@ -1,10 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { Card } from "./components/card";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const handleClick = () => {
+    console.log("🚀 ~ handleClick ~ handleClick: called");
+  };
 
   return (
     <>
@@ -28,8 +32,9 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <Card onClick={handleClick}>Click Me !</Card>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

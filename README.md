@@ -1,30 +1,81 @@
-# React + TypeScript + Vite
+# Table of Contents
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+1. [Install Vitest and Set up](#install-vitest-and-set-up)
+2. [Install React Testing Library](#install-react-testing-library)
 
-Currently, two official plugins are available:
+## Install Vitest and Set up
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```shell
+npm install -D vitest jsdom @types/jest vite-tsconfig-paths @vitejs/plugin-react
+```
 
-## Expanding the ESLint configuration
+Next step, we should add the scipt into package,json following the section
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
+```json
+// package.json
+{
+  "scripts": {
+    "test": "vitest", // run test with watch mode
+    "test:silent": "vitest --silent", // silent to filter out console.log
+    "coverage": "vitest run --coverage" // coverage run to check for Statements, Branches, Functions and Lines.
+  }
 }
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Next we add to dependencies types to let editor know our project using types from vitest and jest by the following section
+
+```json
+// tsconfig.json or tsconfig.app.json
+{
+  "compilerOptions": {
+    ...,
+    /* Testing */
+    "types": ["vitest/jsdom",  "jest"]
+  },
+  "include": ["src"]
+}
+```
+
+Next we are adding and jest and vitest by setup
+
+```ts
+// setupTests.ts
+/// <reference types="vitest" />
+
+import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
+```
+
+Next create a file for vitest config as below
+
+```ts
+// vitest.config.ts
+import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig, configDefaults } from "vitest/config";
+
+export default defineConfig({
+  plugins: [tsconfigPaths(), react()],
+  test: {
+    ...configDefaults,
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './setupTests.ts',
+  },
+});
+```
+
+## Install React Testing Library
+
+```bash
+npm install --save-dev @testing-library/react @testing-library/dom @types/react @types/react-dom
+```
+
+Next we will change this config for auto complete to know vitest matcher
+
+```ts
+// tsconfig.json or tsconfig.app.json
+"include": ["src","./setupTests.ts"]
+```
+
+Happy Coding 😊
