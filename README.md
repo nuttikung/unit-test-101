@@ -68,7 +68,7 @@ export default defineConfig({
 ## Install React Testing Library
 
 ```bash
-npm install --save-dev @testing-library/react @testing-library/dom @types/react @types/react-dom
+npm install --save-dev @testing-library/react @testing-library/dom @types/react @types/react-dom @testing-library/jest-dom
 ```
 
 Next we will change this config for auto complete to know vitest matcher

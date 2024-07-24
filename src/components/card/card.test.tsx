@@ -16,5 +16,6 @@ describe("<Card />", () => {
     fireEvent.click(screen.getByText("This is card component"));
 
     expect(mockOnClick).toHaveBeenCalled();
+
   });
 });
